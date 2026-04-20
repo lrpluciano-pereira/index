@@ -59,10 +59,6 @@
             text-decoration: none;
         }
 
-        .logo-icon {
-            margin-right: 8px;
-        }
-
         .nav-links {
             display: flex;
             gap: 24px;
@@ -307,26 +303,53 @@
             margin: 24px 0 16px 0;
         }
 
+        /* BOTÃO CERTIFICADO - SEMPRE VISÍVEL */
+        .certificate-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            margin: 32px 0;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .certificate-section h3 {
+            color: var(--gold);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
         .btn-certificado {
             background: var(--success);
             color: var(--bg-dark);
             border: none;
-            padding: 12px 24px;
+            padding: 14px 28px;
             border-radius: 40px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 16px;
             transition: transform 0.2s;
-            width: 100%;
+            font-size: 1rem;
         }
 
         .btn-certificado:hover:not(:disabled) {
             transform: scale(1.02);
+            background: #27ae60;
         }
 
         .btn-certificado:disabled {
-            opacity: 0.5;
+            opacity: 0.6;
             cursor: not-allowed;
+            background: #7f8c8d;
+        }
+
+        .certificate-status {
+            font-size: 0.85rem;
+            margin-top: 12px;
+            color: var(--text-secondary);
         }
 
         @media (max-width: 768px) {
@@ -453,11 +476,12 @@
             <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 8px;">Progresso acumulado ao longo das sessões</p>
         </div>
 
-        <!-- CERTIFICADO -->
-        <div class="badges-section" style="text-align: center;">
+        <!-- CERTIFICADO - SEMPRE VISÍVEL -->
+        <div class="certificate-section">
             <h3>🎓 Certificado de Conclusão</h3>
             <p>Ao completar todos os módulos com 100% de aproveitamento, você poderá gerar seu certificado.</p>
-            <button class="btn-certificado" id="btnCertificado" onclick="gerarCertificado()" disabled>🔒 Complete todos os módulos</button>
+            <button class="btn-certificado" id="btnCertificado" onclick="gerarCertificado()">🔒 Gerar Certificado</button>
+            <div class="certificate-status" id="certificateStatus">Complete todos os módulos para liberar o certificado</div>
         </div>
 
         <div class="next-activity" id="nextActivity">
@@ -484,7 +508,6 @@
             
             const ctx = canvas.getContext('2d');
             
-            // Fundo
             ctx.fillStyle = '#16213e';
             ctx.fillRect(0, 0, width, 200);
             
@@ -496,11 +519,9 @@
                 return;
             }
             
-            // Pegar últimos 10 registros
             const pontos = historico.slice(-10);
             const passoX = width / (pontos.length - 1 || 1);
             
-            // Desenhar linhas de grade
             ctx.strokeStyle = '#2a3a5a';
             ctx.lineWidth = 0.5;
             for (let i = 0; i <= 4; i++) {
@@ -514,7 +535,6 @@
                 ctx.fillText(`${i * 25}%`, 5, y - 2);
             }
             
-            // Desenhar linha do progresso
             ctx.beginPath();
             ctx.strokeStyle = '#d4af37';
             ctx.lineWidth = 2;
@@ -526,19 +546,16 @@
                 if (i === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
                 
-                // Pontos
                 ctx.fillStyle = '#d4af37';
                 ctx.beginPath();
                 ctx.arc(x, y, 4, 0, 2 * Math.PI);
                 ctx.fill();
                 
-                // Label do ponto
                 ctx.fillStyle = '#ffffff';
                 ctx.font = '9px "Segoe UI"';
                 ctx.textAlign = 'center';
                 ctx.fillText(`${pontos[i].progresso}%`, x, y - 8);
                 
-                // Data
                 ctx.fillStyle = '#9aa7b9';
                 ctx.font = '8px "Segoe UI"';
                 const dataAbreviada = pontos[i].data.substring(5);
@@ -577,7 +594,6 @@
                 progressTeoricoText.innerText = progressoTeorico + '% concluído';
             }
             
-            // Badge Filósofo Iniciante (assistiu todos os vídeos)
             const badgeFilosofo = document.getElementById('badge1');
             const badgeTeoricoIcon = document.getElementById('badgeTeorico');
             if (videosAssistidos.length >= totalVideos) {
@@ -605,7 +621,6 @@
                 progressSimuladorText.innerHTML = 'Não iniciado';
             }
             
-            // Badge Justo Meio (pelo menos 1 decisão equilibrada)
             const badgeJustoMeio = document.getElementById('badge2');
             const badgeSimuladorIcon = document.getElementById('badgeSimulador');
             if (totalJustoMeio >= 1) {
@@ -623,7 +638,6 @@
                 badgeJustoMeio.innerHTML = '🔒 Justo Meio';
             }
             
-            // Badge Sábio Prudente (3 decisões equilibradas)
             const badgeSabio = document.getElementById('badge5');
             if (totalJustoMeio >= 3) {
                 badgeSabio.classList.add('earned');
@@ -648,7 +662,6 @@
                 progressAtividadesText.innerHTML = `${atividadesConcluidas}/4 atividades`;
             }
             
-            // Badge Eudaimon (todas atividades respondidas)
             const badgeEudaimon = document.getElementById('badge3');
             const badgeForumIcon = document.getElementById('badgeForum');
             if (atividadesConcluidas >= 4) {
@@ -680,21 +693,17 @@
             let totalProgresso = 0;
             let totalItens = 0;
             
-            // Vídeos: 3 itens
             totalProgresso += videosAssistidos.length;
             totalItens += totalVideos;
             
-            // Simulador: 1 item (se fez pelo menos 1 simulação)
             if (simulacoes.length > 0) {
                 totalProgresso += 1;
             }
             totalItens += 1;
             
-            // Atividades: 4 itens
             totalProgresso += atividadesConcluidas;
             totalItens += 4;
             
-            // Fórum: 3 posts (considera como 1 item completo)
             if (forumPosts.length >= 3) {
                 totalProgresso += 1;
             }
@@ -710,18 +719,24 @@
             const earnedBadges = document.querySelectorAll('.badge-item.earned').length;
             if (badgeCountSpan) badgeCountSpan.innerHTML = `${earnedBadges} 🏆`;
             
-            // Salvar no histórico
             salvarProgressoHistorico(percentualGeral);
             
-            // 6. Habilitar certificado se 100%
+            // 6. Atualizar botão do certificado (sempre visível)
             const btnCertificado = document.getElementById('btnCertificado');
+            const certificateStatus = document.getElementById('certificateStatus');
+            
             if (percentualGeral >= 100) {
                 btnCertificado.disabled = false;
                 btnCertificado.innerHTML = '🎓 Gerar Certificado de Conclusão';
                 btnCertificado.style.background = '#2ecc71';
+                certificateStatus.innerHTML = '✅ Parabéns! Você completou 100% do curso. Clique no botão acima para gerar seu certificado!';
+                certificateStatus.style.color = '#2ecc71';
             } else {
                 btnCertificado.disabled = true;
-                btnCertificado.innerHTML = `🔒 Complete todos os módulos (${percentualGeral}%)`;
+                btnCertificado.innerHTML = '🔒 Gerar Certificado';
+                btnCertificado.style.background = '#7f8c8d';
+                certificateStatus.innerHTML = `📊 Complete todos os módulos para liberar o certificado. Progresso atual: ${percentualGeral}%`;
+                certificateStatus.style.color = '#9aa7b9';
             }
             
             // 7. Atualizar próxima atividade recomendada
@@ -740,6 +755,7 @@
         }
         
         function gerarCertificado() {
+            // Verificar novamente se o aluno tem 100%
             const videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
             const simulacoes = JSON.parse(localStorage.getItem('simulacoes_realizadas') || '[]');
             let atividadesConcluidas = 0;
@@ -780,8 +796,6 @@
         
         // Inicializar
         atualizarDashboard();
-        
-        // Atualizar a cada 2 segundos (para capturar mudanças de outras abas)
         setInterval(atualizarDashboard, 2000);
     </script>
 </body>
