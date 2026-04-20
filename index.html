@@ -30,7 +30,6 @@
             line-height: 1.5;
         }
 
-        /* Navbar */
         .navbar {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
@@ -82,7 +81,6 @@
             color: var(--text-secondary);
         }
 
-        /* Container */
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -90,7 +88,6 @@
             min-height: calc(100vh - 160px);
         }
 
-        /* Welcome Header */
         .welcome-header {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
             border-radius: 24px;
@@ -104,7 +101,6 @@
             font-weight: 700;
         }
 
-        /* Dashboard Grid */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -176,7 +172,6 @@
             margin-top: 32px;
         }
 
-        /* Footer */
         .footer {
             background: var(--bg-card);
             text-align: center;
@@ -200,7 +195,6 @@
             margin: 24px 0 16px 0;
         }
 
-        /* Responsividade */
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -241,9 +235,9 @@
             </div>
             <div class="nav-links">
                 <a href="index.html" class="active">🏠 Início</a>
-                <a href="modulo-teorico.html">📚 Módulo Teórico</a>
+                <a href="teorico.html">📚 Módulo Teórico</a>
                 <a href="simulador.html">🎮 Simulador</a>
-                <a href="atividades-forum.html">💬 Atividades</a>
+                <a href="forum.html">💬 Atividades</a>
             </div>
             <div class="user-info">
                 <span>👤 Aluno</span>
@@ -259,7 +253,7 @@
 
         <h2>📌 Seus Módulos</h2>
         <div class="dashboard-grid">
-            <div class="modulo-card" onclick="window.location.href='modulo-teorico.html'">
+            <div class="modulo-card" onclick="window.location.href='teorico.html'">
                 <div class="modulo-icon">📖</div>
                 <div class="modulo-title">Módulo 1: Fundamentos</div>
                 <div class="modulo-desc">Introdução à Ética Aristotélica, conceito de Mesotes, virtudes e Eudaimonia.</div>
@@ -267,7 +261,7 @@
                 <span class="progress-text" id="progressTextModulo1">0% concluído</span>
             </div>
 
-            <div class="modulo-card" onclick="window.location.href='modulo-teorico.html#virtudes'">
+            <div class="modulo-card" onclick="window.location.href='teorico.html'">
                 <div class="modulo-icon">🎯</div>
                 <div class="modulo-title">Módulo 2: Justo Meio</div>
                 <div class="modulo-desc">Como identificar excesso, falta e equilíbrio nas relações digitais.</div>
@@ -283,7 +277,7 @@
                 <span class="progress-text" id="progressTextSimulador">Não iniciado</span>
             </div>
 
-            <div class="modulo-card" onclick="window.location.href='atividades-forum.html'">
+            <div class="modulo-card" onclick="window.location.href='forum.html'">
                 <div class="modulo-icon">💡</div>
                 <div class="modulo-title">Atividades + Fórum</div>
                 <div class="modulo-desc">Questões reflexivas e discussão com colegas sobre ética digital.</div>
@@ -304,7 +298,6 @@
 
     <script>
         function atualizarDashboard() {
-            // Verificar vídeos assistidos
             const videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
             const totalVideos = 2;
             const progressoTeorico = (videosAssistidos.length / totalVideos) * 100;
@@ -323,7 +316,6 @@
                 textMod2.innerText = Math.round(progressoTeorico) + '% concluído';
             }
             
-            // Simulador
             const simulacoes = JSON.parse(localStorage.getItem('simulacoes_realizadas') || '[]');
             const totalJustoMeio = simulacoes.filter(s => s.decisao === 'justoMeio').length;
             const progressSimulador = document.getElementById('progressSimulador');
@@ -335,7 +327,6 @@
                 textSimulador.innerText = 'Não iniciado';
             }
             
-            // Atividades
             let atividadesConcluidas = 0;
             for(let i = 1; i <= 4; i++) {
                 const resposta = localStorage.getItem(`resposta_atividade_${i}`);
