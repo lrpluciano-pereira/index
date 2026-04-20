@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVA | Ética Aristotélica no Cotidiano Digital</title>
+    <title>Início | Ética Aristotélica no Cotidiano Digital</title>
     <style>
         * {
             margin: 0;
@@ -30,6 +30,7 @@
             line-height: 1.5;
         }
 
+        /* ===== CABEÇALHO PADRÃO ===== */
         .navbar {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
@@ -53,6 +54,7 @@
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--gold);
+            text-decoration: none;
         }
 
         .logo-icon {
@@ -72,7 +74,12 @@
             padding: 8px 0;
         }
 
-        .nav-links a:hover, .nav-links a.active {
+        .nav-links a:hover {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .nav-links a.active {
             color: var(--gold);
             border-bottom: 2px solid var(--gold);
         }
@@ -80,6 +87,7 @@
         .user-info {
             color: var(--text-secondary);
         }
+        /* ===== FIM CABEÇALHO ===== */
 
         .container {
             max-width: 1000px;
@@ -227,12 +235,13 @@
     </style>
 </head>
 <body>
+    <!-- CABEÇALHO PADRÃO -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">
+            <a href="https://lrpluciano-pereira.github.io/index/" class="logo">
                 <span class="logo-icon">⚖️</span>
                 <span>Ética Digital</span>
-            </div>
+            </a>
             <div class="nav-links">
                 <a href="https://lrpluciano-pereira.github.io/index/" class="active">🏠 Início</a>
                 <a href="https://lrpluciano-pereira.github.io/teorico/">📚 Módulo Teórico</a>
