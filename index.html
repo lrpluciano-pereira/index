@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Início | Ética Aristotélica no Cotidiano Digital</title>
+    <title>AVA | Ética Aristotélica no Cotidiano Digital</title>
     <style>
         * {
             margin: 0;
@@ -21,6 +21,8 @@
             --text-secondary: #9aa7b9;
             --border: #1e2a44;
             --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
         }
 
         body {
@@ -30,7 +32,7 @@
             line-height: 1.5;
         }
 
-        /* ===== CABEÇALHO PADRÃO ===== */
+        /* CABEÇALHO PADRÃO */
         .navbar {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
@@ -74,21 +76,27 @@
             padding: 8px 0;
         }
 
-        .nav-links a:hover {
-            color: var(--gold);
-            border-bottom: 2px solid var(--gold);
-        }
-
-        .nav-links a.active {
+        .nav-links a:hover, .nav-links a.active {
             color: var(--gold);
             border-bottom: 2px solid var(--gold);
         }
 
         .user-info {
-            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
-        /* ===== FIM CABEÇALHO ===== */
 
+        .badge-count {
+            background: var(--gold);
+            color: var(--bg-dark);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* CONTEÚDO */
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -96,6 +104,7 @@
             min-height: calc(100vh - 160px);
         }
 
+        /* Banner de boas-vindas com progresso */
         .welcome-header {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
             border-radius: 24px;
@@ -107,13 +116,42 @@
         .student-name {
             font-size: 1.8rem;
             font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
+        .overall-progress {
+            background: rgba(0,0,0,0.2);
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar-large {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            height: 8px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+
+        .progress-fill-large {
+            background: var(--bg-dark);
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+
+        /* Grid de módulos */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px;
-            margin-top: 32px;
+            margin: 24px 0 32px;
         }
 
         .modulo-card {
@@ -121,7 +159,7 @@
             border-radius: 20px;
             padding: 24px;
             border: 1px solid var(--border);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s;
             cursor: pointer;
         }
 
@@ -141,12 +179,16 @@
             font-weight: 600;
             color: var(--gold);
             margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .modulo-desc {
             color: var(--text-secondary);
             font-size: 0.9rem;
             margin-bottom: 16px;
+            line-height: 1.5;
         }
 
         .progress-bar {
@@ -172,12 +214,82 @@
             display: block;
         }
 
+        /* Badges conquistados */
+        .badges-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            margin: 32px 0;
+            border: 1px solid var(--border);
+        }
+
+        .badges-section h3 {
+            color: var(--gold);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badges-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .badge-item {
+            background: var(--bg-light);
+            border-radius: 40px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .badge-item.earned {
+            background: var(--gold-dark);
+            color: var(--bg-dark);
+        }
+
+        .badge-item.locked {
+            opacity: 0.5;
+        }
+
+        /* Gráfico */
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            margin: 32px 0;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .chart-container h3 {
+            color: var(--gold);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        canvas {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 16px;
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+        }
+
         .next-activity {
             background: var(--bg-card);
             border-left: 4px solid var(--gold);
             padding: 16px 20px;
             border-radius: 16px;
-            margin-top: 32px;
+            margin-top: 20px;
         }
 
         .footer {
@@ -189,18 +301,32 @@
             font-size: 0.85rem;
         }
 
-        h1, h2 {
-            color: var(--gold);
-        }
-
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 16px;
-        }
-
         h2 {
+            color: var(--gold);
             font-size: 1.5rem;
             margin: 24px 0 16px 0;
+        }
+
+        .btn-certificado {
+            background: var(--success);
+            color: var(--bg-dark);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+
+        .btn-certificado:hover:not(:disabled) {
+            transform: scale(1.02);
+        }
+
+        .btn-certificado:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         @media (max-width: 768px) {
@@ -211,31 +337,21 @@
             .nav-links {
                 justify-content: center;
             }
-            .container {
-                padding: 20px 16px;
-            }
-            h1 {
-                font-size: 1.6rem;
-            }
             .student-name {
-                font-size: 1.4rem;
+                flex-direction: column;
+                align-items: flex-start;
             }
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 10px;
+            .badges-grid {
+                gap: 8px;
+            }
+            .badge-item {
+                font-size: 0.7rem;
+                padding: 4px 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- CABEÇALHO PADRÃO -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="https://lrpluciano-pereira.github.io/index/" class="logo">
@@ -249,6 +365,7 @@
                 <a href="https://lrpluciano-pereira.github.io/forum/">💬 Atividades</a>
             </div>
             <div class="user-info">
+                <span class="badge-count" id="badgeCount">0 🏆</span>
                 <span>👤 Aluno</span>
             </div>
         </div>
@@ -256,47 +373,95 @@
 
     <main class="container">
         <div class="welcome-header">
-            <div class="student-name">Olá, estudante! 👋</div>
-            <p style="margin-top: 8px;">Bem-vindo ao AVA de Ética Aristotélica no Cotidiano Digital. Aqui você vai aprender a aplicar o conceito de "Justo Meio" nas suas decisões digitais.</p>
+            <div class="student-name">
+                <span>Olá, estudante! 👋</span>
+                <span class="overall-progress" id="overallProgressText">Progresso geral: 0%</span>
+            </div>
+            <p style="margin-top: 8px;">Bem-vindo ao AVA de Ética Aristotélica no Cotidiano Digital. Siga o roteiro abaixo para completar seu curso!</p>
+            <div class="progress-bar-large">
+                <div class="progress-fill-large" id="overallProgressBar"></div>
+            </div>
         </div>
 
-        <h2>📌 Seus Módulos</h2>
+        <h2>📌 Roteiro de Aprendizagem</h2>
         <div class="dashboard-grid">
-            <div class="modulo-card" onclick="window.location.href='https://lrpluciano-pereira.github.io/teorico/'">
+            <!-- MÓDULO 1: TEORIA -->
+            <div class="modulo-card" id="cardTeorico" onclick="window.location.href='https://lrpluciano-pereira.github.io/teorico/'">
                 <div class="modulo-icon">📖</div>
-                <div class="modulo-title">Módulo 1: Fundamentos</div>
-                <div class="modulo-desc">Introdução à Ética Aristotélica, conceito de Mesotes, virtudes e Eudaimonia.</div>
-                <div class="progress-bar"><div class="progress-fill" id="progressModulo1"></div></div>
-                <span class="progress-text" id="progressTextModulo1">0% concluído</span>
+                <div class="modulo-title">
+                    1. Fundamentos Teóricos
+                    <span id="badgeTeorico" style="font-size:0.8rem;">🔒</span>
+                </div>
+                <div class="modulo-desc">
+                    <strong>🎯 Objetivo:</strong> Compreender os conceitos de Eudaimonia, Virtude e Justo Meio.<br>
+                    <strong>📹 Conteúdo:</strong> 3 videoaulas + textos filosóficos<br>
+                    <strong>⏱️ Duração:</strong> ~60 minutos
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressTeorico"></div></div>
+                <span class="progress-text" id="progressTextTeorico">0% concluído</span>
             </div>
 
-            <div class="modulo-card" onclick="window.location.href='https://lrpluciano-pereira.github.io/teorico/'">
-                <div class="modulo-icon">🎯</div>
-                <div class="modulo-title">Módulo 2: Justo Meio</div>
-                <div class="modulo-desc">Como identificar excesso, falta e equilíbrio nas relações digitais.</div>
-                <div class="progress-bar"><div class="progress-fill" id="progressModulo2"></div></div>
-                <span class="progress-text" id="progressTextModulo2">0% concluído</span>
-            </div>
-
-            <div class="modulo-card" onclick="window.location.href='https://lrpluciano-pereira.github.io/simulador/'">
+            <!-- MÓDULO 2: SIMULADOR -->
+            <div class="modulo-card" id="cardSimulador" onclick="window.location.href='https://lrpluciano-pereira.github.io/simulador/'">
                 <div class="modulo-icon">🎮</div>
-                <div class="modulo-title">Simulador Interativo</div>
-                <div class="modulo-desc">Pratique com dilemas reais do cotidiano digital usando o slider.</div>
+                <div class="modulo-title">
+                    2. Prática Interativa
+                    <span id="badgeSimulador" style="font-size:0.8rem;">🔒</span>
+                </div>
+                <div class="modulo-desc">
+                    <strong>🎯 Objetivo:</strong> Aplicar o Justo Meio em dilemas digitais.<br>
+                    <strong>🎮 Atividade:</strong> Simulador com 6 cenários<br>
+                    <strong>⏱️ Duração:</strong> ~30 minutos
+                </div>
                 <div class="progress-bar"><div class="progress-fill" id="progressSimulador"></div></div>
                 <span class="progress-text" id="progressTextSimulador">Não iniciado</span>
             </div>
 
-            <div class="modulo-card" onclick="window.location.href='https://lrpluciano-pereira.github.io/forum/'">
-                <div class="modulo-icon">💡</div>
-                <div class="modulo-title">Atividades + Fórum</div>
-                <div class="modulo-desc">Questões reflexivas e discussão com colegas sobre ética digital.</div>
+            <!-- MÓDULO 3: REFLEXÃO -->
+            <div class="modulo-card" id="cardForum" onclick="window.location.href='https://lrpluciano-pereira.github.io/forum/'">
+                <div class="modulo-icon">💬</div>
+                <div class="modulo-title">
+                    3. Reflexão e Debate
+                    <span id="badgeForum" style="font-size:0.8rem;">🔒</span>
+                </div>
+                <div class="modulo-desc">
+                    <strong>🎯 Objetivo:</strong> Refletir criticamente e compartilhar ideias.<br>
+                    <strong>📝 Atividade:</strong> 4 questões + fórum<br>
+                    <strong>⏱️ Duração:</strong> ~45 minutos
+                </div>
                 <div class="progress-bar"><div class="progress-fill" id="progressAtividades"></div></div>
                 <span class="progress-text" id="progressTextAtividades">0/4 atividades</span>
             </div>
         </div>
 
-        <div class="next-activity">
-            <strong>📢 Próxima atividade recomendada:</strong> Assistir ao vídeo "Introdução à Ética Aristotélica" no Módulo Teórico.
+        <!-- SISTEMA DE BADGES / CONQUISTAS -->
+        <div class="badges-section">
+            <h3>🏆 Suas Conquistas</h3>
+            <div class="badges-grid" id="badgesGrid">
+                <div class="badge-item" id="badge1">🏛️ Filósofo Iniciante</div>
+                <div class="badge-item" id="badge2">⚖️ Justo Meio</div>
+                <div class="badge-item" id="badge3">🌿 Eudaimon</div>
+                <div class="badge-item" id="badge4">💬 Mestre do Diálogo</div>
+                <div class="badge-item" id="badge5">🎓 Sábio Prudente</div>
+            </div>
+        </div>
+
+        <!-- GRÁFICO DE EVOLUÇÃO -->
+        <div class="chart-container">
+            <h3>📈 Sua Evolução</h3>
+            <canvas id="progressChart" width="500" height="200" style="width:100%; max-width:500px; height:auto; background: var(--bg-light); border-radius: 16px;"></canvas>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 8px;">Progresso acumulado ao longo das sessões</p>
+        </div>
+
+        <!-- CERTIFICADO -->
+        <div class="badges-section" style="text-align: center;">
+            <h3>🎓 Certificado de Conclusão</h3>
+            <p>Ao completar todos os módulos com 100% de aproveitamento, você poderá gerar seu certificado.</p>
+            <button class="btn-certificado" id="btnCertificado" onclick="gerarCertificado()" disabled>🔒 Complete todos os módulos</button>
+        </div>
+
+        <div class="next-activity" id="nextActivity">
+            <strong>📢 Próximo passo:</strong> Comece pelo <strong>Módulo Teórico</strong> assistindo aos vídeos!
         </div>
     </main>
 
@@ -306,50 +471,318 @@
     </footer>
 
     <script>
+        // Função para desenhar o gráfico de evolução
+        function desenharGrafico() {
+            const historico = JSON.parse(localStorage.getItem('historico_progresso') || '[]');
+            const canvas = document.getElementById('progressChart');
+            if (!canvas) return;
+            
+            const container = canvas.parentElement;
+            const width = Math.min(container.clientWidth - 32, 500);
+            canvas.width = width;
+            canvas.height = 200;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Fundo
+            ctx.fillStyle = '#16213e';
+            ctx.fillRect(0, 0, width, 200);
+            
+            if (historico.length === 0) {
+                ctx.fillStyle = '#9aa7b9';
+                ctx.font = '12px "Segoe UI"';
+                ctx.textAlign = 'center';
+                ctx.fillText('Complete mais atividades para ver seu gráfico de evolução', width/2, 100);
+                return;
+            }
+            
+            // Pegar últimos 10 registros
+            const pontos = historico.slice(-10);
+            const passoX = width / (pontos.length - 1 || 1);
+            
+            // Desenhar linhas de grade
+            ctx.strokeStyle = '#2a3a5a';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i <= 4; i++) {
+                const y = 200 - (i * 50);
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+                ctx.fillStyle = '#6a7a9a';
+                ctx.font = '9px "Segoe UI"';
+                ctx.fillText(`${i * 25}%`, 5, y - 2);
+            }
+            
+            // Desenhar linha do progresso
+            ctx.beginPath();
+            ctx.strokeStyle = '#d4af37';
+            ctx.lineWidth = 2;
+            
+            for (let i = 0; i < pontos.length; i++) {
+                const x = i * passoX;
+                const y = 200 - (pontos[i].progresso / 100) * 180;
+                
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+                
+                // Pontos
+                ctx.fillStyle = '#d4af37';
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Label do ponto
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '9px "Segoe UI"';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${pontos[i].progresso}%`, x, y - 8);
+                
+                // Data
+                ctx.fillStyle = '#9aa7b9';
+                ctx.font = '8px "Segoe UI"';
+                const dataAbreviada = pontos[i].data.substring(5);
+                ctx.fillText(dataAbreviada, x, 195);
+            }
+            ctx.stroke();
+        }
+
+        // Função para salvar progresso no histórico
+        function salvarProgressoHistorico(percentual) {
+            let historico = JSON.parse(localStorage.getItem('historico_progresso') || '[]');
+            const hoje = new Date().toLocaleDateString('pt-BR');
+            const ultimo = historico[historico.length - 1];
+            
+            if (!ultimo || ultimo.data !== hoje) {
+                historico.push({ data: hoje, progresso: percentual });
+                localStorage.setItem('historico_progresso', JSON.stringify(historico.slice(-30)));
+            } else if (ultimo.progresso !== percentual) {
+                ultimo.progresso = percentual;
+                localStorage.setItem('historico_progresso', JSON.stringify(historico));
+            }
+            desenharGrafico();
+        }
+
+        // Função principal para atualizar todo o dashboard
         function atualizarDashboard() {
+            // 1. Progresso do Módulo Teórico (vídeos)
             const videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
-            const totalVideos = 2;
-            const progressoTeorico = (videosAssistidos.length / totalVideos) * 100;
+            const totalVideos = 3;
+            const progressoTeorico = Math.min(100, Math.round((videosAssistidos.length / totalVideos) * 100));
             
-            const progressMod1 = document.getElementById('progressModulo1');
-            const progressMod2 = document.getElementById('progressModulo2');
-            const textMod1 = document.getElementById('progressTextModulo1');
-            const textMod2 = document.getElementById('progressTextModulo2');
-            
-            if (progressMod1) {
-                progressMod1.style.width = progressoTeorico + '%';
-                textMod1.innerText = Math.round(progressoTeorico) + '% concluído';
-            }
-            if (progressMod2) {
-                progressMod2.style.width = progressoTeorico + '%';
-                textMod2.innerText = Math.round(progressoTeorico) + '% concluído';
+            const progressTeoricoFill = document.getElementById('progressTeorico');
+            const progressTeoricoText = document.getElementById('progressTextTeorico');
+            if (progressTeoricoFill) {
+                progressTeoricoFill.style.width = progressoTeorico + '%';
+                progressTeoricoText.innerText = progressoTeorico + '% concluído';
             }
             
+            // Badge Filósofo Iniciante (assistiu todos os vídeos)
+            const badgeFilosofo = document.getElementById('badge1');
+            const badgeTeoricoIcon = document.getElementById('badgeTeorico');
+            if (videosAssistidos.length >= totalVideos) {
+                badgeFilosofo.classList.add('earned');
+                badgeFilosofo.classList.remove('locked');
+                badgeFilosofo.innerHTML = '🏛️ Filósofo Iniciante ✓';
+                if (badgeTeoricoIcon) badgeTeoricoIcon.innerHTML = '✓';
+            } else {
+                badgeFilosofo.classList.remove('earned');
+                badgeFilosofo.classList.add('locked');
+                badgeFilosofo.innerHTML = '🔒 Filósofo Iniciante';
+                if (badgeTeoricoIcon) badgeTeoricoIcon.innerHTML = '🔒';
+            }
+            
+            // 2. Progresso do Simulador
             const simulacoes = JSON.parse(localStorage.getItem('simulacoes_realizadas') || '[]');
             const totalJustoMeio = simulacoes.filter(s => s.decisao === 'justoMeio').length;
-            const progressSimulador = document.getElementById('progressSimulador');
-            const textSimulador = document.getElementById('progressTextSimulador');
-            if (progressSimulador && simulacoes.length > 0) {
-                progressSimulador.style.width = '100%';
-                textSimulador.innerText = `${simulacoes.length} cenário(s) realizado(s) | ${totalJustoMeio} escolhas equilibradas`;
-            } else if (textSimulador) {
-                textSimulador.innerText = 'Não iniciado';
+            
+            const progressSimuladorFill = document.getElementById('progressSimulador');
+            const progressSimuladorText = document.getElementById('progressTextSimulador');
+            if (progressSimuladorFill && simulacoes.length > 0) {
+                progressSimuladorFill.style.width = '100%';
+                progressSimuladorText.innerHTML = `${simulacoes.length} cenário(s) | ${totalJustoMeio} escolhas equilibradas`;
+            } else if (progressSimuladorText) {
+                progressSimuladorText.innerHTML = 'Não iniciado';
             }
             
+            // Badge Justo Meio (pelo menos 1 decisão equilibrada)
+            const badgeJustoMeio = document.getElementById('badge2');
+            const badgeSimuladorIcon = document.getElementById('badgeSimulador');
+            if (totalJustoMeio >= 1) {
+                badgeJustoMeio.classList.add('earned');
+                badgeJustoMeio.classList.remove('locked');
+                badgeJustoMeio.innerHTML = '⚖️ Justo Meio ✓';
+                if (badgeSimuladorIcon) badgeSimuladorIcon.innerHTML = '✓';
+            } else if (simulacoes.length > 0) {
+                badgeJustoMeio.classList.remove('earned');
+                badgeJustoMeio.classList.add('locked');
+                badgeJustoMeio.innerHTML = '🔒 Justo Meio (faça uma escolha equilibrada)';
+            } else {
+                badgeJustoMeio.classList.remove('earned');
+                badgeJustoMeio.classList.add('locked');
+                badgeJustoMeio.innerHTML = '🔒 Justo Meio';
+            }
+            
+            // Badge Sábio Prudente (3 decisões equilibradas)
+            const badgeSabio = document.getElementById('badge5');
+            if (totalJustoMeio >= 3) {
+                badgeSabio.classList.add('earned');
+                badgeSabio.classList.remove('locked');
+                badgeSabio.innerHTML = '🎓 Sábio Prudente ✓';
+            } else {
+                badgeSabio.classList.remove('earned');
+                badgeSabio.classList.add('locked');
+                badgeSabio.innerHTML = totalJustoMeio > 0 ? `🔒 Sábio Prudente (faltam ${3 - totalJustoMeio} escolhas equilibradas)` : '🔒 Sábio Prudente';
+            }
+            
+            // 3. Progresso das Atividades
             let atividadesConcluidas = 0;
             for(let i = 1; i <= 4; i++) {
                 const resposta = localStorage.getItem(`resposta_atividade_${i}`);
                 if(resposta && resposta.trim().length > 0) atividadesConcluidas++;
             }
-            const progressAtividades = document.getElementById('progressAtividades');
-            const textAtividades = document.getElementById('progressTextAtividades');
-            if (progressAtividades) {
-                progressAtividades.style.width = (atividadesConcluidas / 4) * 100 + '%';
-                textAtividades.innerText = `${atividadesConcluidas}/4 atividades`;
+            const progressAtividadesFill = document.getElementById('progressAtividades');
+            const progressAtividadesText = document.getElementById('progressTextAtividades');
+            if (progressAtividadesFill) {
+                progressAtividadesFill.style.width = (atividadesConcluidas / 4) * 100 + '%';
+                progressAtividadesText.innerHTML = `${atividadesConcluidas}/4 atividades`;
+            }
+            
+            // Badge Eudaimon (todas atividades respondidas)
+            const badgeEudaimon = document.getElementById('badge3');
+            const badgeForumIcon = document.getElementById('badgeForum');
+            if (atividadesConcluidas >= 4) {
+                badgeEudaimon.classList.add('earned');
+                badgeEudaimon.classList.remove('locked');
+                badgeEudaimon.innerHTML = '🌿 Eudaimon ✓';
+                if (badgeForumIcon) badgeForumIcon.innerHTML = '✓';
+            } else {
+                badgeEudaimon.classList.remove('earned');
+                badgeEudaimon.classList.add('locked');
+                badgeEudaimon.innerHTML = `🔒 Eudaimon (${atividadesConcluidas}/4 atividades)`;
+                if (badgeForumIcon) badgeForumIcon.innerHTML = '🔒';
+            }
+            
+            // 4. Badge Mestre do Diálogo (posts no fórum)
+            const forumPosts = JSON.parse(localStorage.getItem('forum_posts') || '[]');
+            const badgeDialogo = document.getElementById('badge4');
+            if (forumPosts.length >= 3) {
+                badgeDialogo.classList.add('earned');
+                badgeDialogo.classList.remove('locked');
+                badgeDialogo.innerHTML = '💬 Mestre do Diálogo ✓';
+            } else {
+                badgeDialogo.classList.remove('earned');
+                badgeDialogo.classList.add('locked');
+                badgeDialogo.innerHTML = `🔒 Mestre do Diálogo (${forumPosts.length}/3 posts)`;
+            }
+            
+            // 5. Progresso geral
+            let totalProgresso = 0;
+            let totalItens = 0;
+            
+            // Vídeos: 3 itens
+            totalProgresso += videosAssistidos.length;
+            totalItens += totalVideos;
+            
+            // Simulador: 1 item (se fez pelo menos 1 simulação)
+            if (simulacoes.length > 0) {
+                totalProgresso += 1;
+            }
+            totalItens += 1;
+            
+            // Atividades: 4 itens
+            totalProgresso += atividadesConcluidas;
+            totalItens += 4;
+            
+            // Fórum: 3 posts (considera como 1 item completo)
+            if (forumPosts.length >= 3) {
+                totalProgresso += 1;
+            }
+            totalItens += 1;
+            
+            const percentualGeral = Math.min(100, Math.round((totalProgresso / totalItens) * 100));
+            const overallBar = document.getElementById('overallProgressBar');
+            const overallText = document.getElementById('overallProgressText');
+            if (overallBar) overallBar.style.width = percentualGeral + '%';
+            if (overallText) overallText.innerHTML = `Progresso geral: ${percentualGeral}%`;
+            
+            const badgeCountSpan = document.getElementById('badgeCount');
+            const earnedBadges = document.querySelectorAll('.badge-item.earned').length;
+            if (badgeCountSpan) badgeCountSpan.innerHTML = `${earnedBadges} 🏆`;
+            
+            // Salvar no histórico
+            salvarProgressoHistorico(percentualGeral);
+            
+            // 6. Habilitar certificado se 100%
+            const btnCertificado = document.getElementById('btnCertificado');
+            if (percentualGeral >= 100) {
+                btnCertificado.disabled = false;
+                btnCertificado.innerHTML = '🎓 Gerar Certificado de Conclusão';
+                btnCertificado.style.background = '#2ecc71';
+            } else {
+                btnCertificado.disabled = true;
+                btnCertificado.innerHTML = `🔒 Complete todos os módulos (${percentualGeral}%)`;
+            }
+            
+            // 7. Atualizar próxima atividade recomendada
+            const nextActivityDiv = document.getElementById('nextActivity');
+            if (videosAssistidos.length < totalVideos) {
+                nextActivityDiv.innerHTML = '<strong>📢 Próximo passo:</strong> 🎬 Assista aos vídeos do <strong>Módulo Teórico</strong>!';
+            } else if (simulacoes.length === 0) {
+                nextActivityDiv.innerHTML = '<strong>📢 Próximo passo:</strong> 🎮 Pratique no <strong>Simulador Interativo</strong>!';
+            } else if (atividadesConcluidas < 4) {
+                nextActivityDiv.innerHTML = '<strong>📢 Próximo passo:</strong> 💬 Responda às atividades e participe do <strong>Fórum</strong>!';
+            } else if (forumPosts.length < 3) {
+                nextActivityDiv.innerHTML = '<strong>📢 Próximo passo:</strong> 💬 Publique mais posts no <strong>Fórum</strong> para completar seu certificado!';
+            } else {
+                nextActivityDiv.innerHTML = '<strong>🎉 Parabéns!</strong> Você completou todos os módulos! Clique em "Gerar Certificado" acima.';
             }
         }
         
+        function gerarCertificado() {
+            const videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
+            const simulacoes = JSON.parse(localStorage.getItem('simulacoes_realizadas') || '[]');
+            let atividadesConcluidas = 0;
+            for(let i = 1; i <= 4; i++) {
+                const resposta = localStorage.getItem(`resposta_atividade_${i}`);
+                if(resposta && resposta.trim().length > 0) atividadesConcluidas++;
+            }
+            const forumPosts = JSON.parse(localStorage.getItem('forum_posts') || '[]');
+            
+            let totalProgresso = 0;
+            let totalItens = 0;
+            totalProgresso += videosAssistidos.length;
+            totalItens += 3;
+            if (simulacoes.length > 0) totalProgresso += 1;
+            totalItens += 1;
+            totalProgresso += atividadesConcluidas;
+            totalItens += 4;
+            if (forumPosts.length >= 3) totalProgresso += 1;
+            totalItens += 1;
+            
+            const percentualGeral = Math.min(100, Math.round((totalProgresso / totalItens) * 100));
+            
+            if (percentualGeral >= 100) {
+                const nome = prompt("Digite seu nome completo para o certificado:");
+                if (nome && nome.trim().length > 0) {
+                    localStorage.setItem('certificado_nome', nome.trim());
+                    localStorage.setItem('certificado_data', new Date().toLocaleDateString('pt-BR'));
+                    window.open('https://lrpluciano-pereira.github.io/certificado.html', '_blank');
+                } else if (nome === null) {
+                    // Usuário cancelou
+                } else {
+                    alert('Por favor, digite um nome válido.');
+                }
+            } else {
+                alert(`Você completou ${percentualGeral}% do curso. Complete 100% para gerar o certificado!`);
+            }
+        }
+        
+        // Inicializar
         atualizarDashboard();
+        
+        // Atualizar a cada 2 segundos (para capturar mudanças de outras abas)
+        setInterval(atualizarDashboard, 2000);
     </script>
 </body>
 </html>
