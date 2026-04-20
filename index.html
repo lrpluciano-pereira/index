@@ -380,7 +380,7 @@
             <div class="user-info">
                 <span class="badge-count" id="badgeCount">0 🏆</span>
                 <span id="userName">👤 Aluno</span>
-                <a href="https://lrpluciano-pereira.github.io/login.html" style="color: var(--text-secondary); text-decoration: none;">🚪 Sair</a>
+                <a href="https://lrpluciano-pereira.github.io/login.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">🚪 Sair</a>
             </div>
         </div>
     </nav>
@@ -399,6 +399,7 @@
 
         <h2>📌 Roteiro de Aprendizagem</h2>
         <div class="dashboard-grid">
+            <!-- CARD 1: CONTEÚDO TEÓRICO -->
             <div class="modulo-card" onclick="window.location.href='https://lrpluciano-pereira.github.io/conteudo.html'">
                 <div class="modulo-icon">📚</div>
                 <div class="modulo-title">
@@ -416,6 +417,7 @@
                 <span class="progress-text" id="progressTextTeorico">0% concluído</span>
             </div>
 
+            <!-- CARD 2: SIMULADOR -->
             <div class="modulo-card" onclick="window.location.href='https://lrpluciano-pereira.github.io/simulador.html'">
                 <div class="modulo-icon">🎮</div>
                 <div class="modulo-title">
@@ -433,6 +435,7 @@
                 <span class="progress-text" id="progressTextSimulador">Não iniciado</span>
             </div>
 
+            <!-- CARD 3: ATIVIDADES E FÓRUM -->
             <div class="modulo-card" onclick="window.location.href='https://lrpluciano-pereira.github.io/forum.html'">
                 <div class="modulo-icon">💬</div>
                 <div class="modulo-title">
@@ -451,6 +454,7 @@
             </div>
         </div>
 
+        <!-- SISTEMA DE BADGES -->
         <div class="badges-section">
             <h3>🏆 Suas Conquistas</h3>
             <div class="badges-grid" id="badgesGrid">
@@ -462,12 +466,14 @@
             </div>
         </div>
 
+        <!-- GRÁFICO DE EVOLUÇÃO -->
         <div class="chart-container">
             <h3>📈 Sua Evolução</h3>
-            <canvas id="progressChart" width="500" height="200" style="width:100%; max-width:500px; height:auto; background: var(--bg-light); border-radius: 16px;"></canvas>
+            <canvas id="progressChart" width="500" height="200"></canvas>
             <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 8px;">Progresso acumulado ao longo das sessões</p>
         </div>
 
+        <!-- CERTIFICADO -->
         <div class="certificate-section">
             <h3>🎓 Certificado de Conclusão</h3>
             <p>Ao completar todos os módulos com 100% de aproveitamento, você poderá gerar seu certificado.</p>
@@ -486,11 +492,17 @@
     </footer>
 
     <script>
-        // Carregar nome do usuário
+        // Carregar nome do usuário do localStorage
         const usuarioNome = localStorage.getItem('usuario_nome') || 'Aluno';
-        document.getElementById('userName').innerHTML = `👤 ${usuarioNome}`;
-        document.getElementById('welcomeMessage').innerHTML = `Olá, ${usuarioNome}! 👋`;
+        document.getElementById('userName').innerHTML = `👤 ${usuarioNome.substring(0, 20)}`;
+        document.getElementById('welcomeMessage').innerHTML = `Olá, ${usuarioNome.substring(0, 20)}! 👋`;
 
+        // Verificar se está logado
+        if (!localStorage.getItem('usuario_logado')) {
+            window.location.href = 'https://lrpluciano-pereira.github.io/login.html';
+        }
+
+        // Função para desenhar o gráfico
         function desenharGrafico() {
             const historico = JSON.parse(localStorage.getItem('historico_progresso') || '[]');
             const canvas = document.getElementById('progressChart');
@@ -509,7 +521,7 @@
                 ctx.fillStyle = '#9aa7b9';
                 ctx.font = '12px "Segoe UI"';
                 ctx.textAlign = 'center';
-                ctx.fillText('Complete mais atividades para ver seu gráfico de evolução', width/2, 100);
+                ctx.fillText('Complete atividades para ver seu gráfico', width/2, 100);
                 return;
             }
             
@@ -558,6 +570,7 @@
             ctx.stroke();
         }
 
+        // Salvar progresso no histórico
         function salvarProgressoHistorico(percentual) {
             let historico = JSON.parse(localStorage.getItem('historico_progresso') || '[]');
             const hoje = new Date().toLocaleDateString('pt-BR');
@@ -573,7 +586,9 @@
             desenharGrafico();
         }
 
+        // Atualizar todo o dashboard
         function atualizarDashboard() {
+            // 1. Progresso do Módulo Teórico (vídeos)
             const videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
             const totalVideos = 3;
             const progressoTeorico = Math.min(100, Math.round((videosAssistidos.length / totalVideos) * 100));
@@ -585,6 +600,7 @@
                 progressTeoricoText.innerText = progressoTeorico + '% concluído';
             }
             
+            // Badge Filósofo Iniciante
             const badgeFilosofo = document.getElementById('badge1');
             const badgeTeoricoIcon = document.getElementById('badgeTeorico');
             if (videosAssistidos.length >= totalVideos) {
@@ -599,6 +615,7 @@
                 if (badgeTeoricoIcon) badgeTeoricoIcon.innerHTML = '🔒';
             }
             
+            // 2. Progresso do Simulador
             const simulacoes = JSON.parse(localStorage.getItem('simulacoes_realizadas') || '[]');
             const totalJustoMeio = simulacoes.filter(s => s.decisao === 'justoMeio').length;
             
@@ -611,6 +628,7 @@
                 progressSimuladorText.innerHTML = 'Não iniciado';
             }
             
+            // Badge Justo Meio
             const badgeJustoMeio = document.getElementById('badge2');
             const badgeSimuladorIcon = document.getElementById('badgeSimulador');
             if (totalJustoMeio >= 1) {
@@ -618,16 +636,13 @@
                 badgeJustoMeio.classList.remove('locked');
                 badgeJustoMeio.innerHTML = '⚖️ Justo Meio ✓';
                 if (badgeSimuladorIcon) badgeSimuladorIcon.innerHTML = '✓';
-            } else if (simulacoes.length > 0) {
-                badgeJustoMeio.classList.remove('earned');
-                badgeJustoMeio.classList.add('locked');
-                badgeJustoMeio.innerHTML = '🔒 Justo Meio (faça uma escolha equilibrada)';
             } else {
                 badgeJustoMeio.classList.remove('earned');
                 badgeJustoMeio.classList.add('locked');
                 badgeJustoMeio.innerHTML = '🔒 Justo Meio';
             }
             
+            // Badge Sábio Prudente (3 decisões equilibradas)
             const badgeSabio = document.getElementById('badge5');
             if (totalJustoMeio >= 3) {
                 badgeSabio.classList.add('earned');
@@ -636,9 +651,10 @@
             } else {
                 badgeSabio.classList.remove('earned');
                 badgeSabio.classList.add('locked');
-                badgeSabio.innerHTML = totalJustoMeio > 0 ? `🔒 Sábio Prudente (faltam ${3 - totalJustoMeio} escolhas equilibradas)` : '🔒 Sábio Prudente';
+                badgeSabio.innerHTML = totalJustoMeio > 0 ? `🔒 Sábio Prudente (faltam ${3 - totalJustoMeio})` : '🔒 Sábio Prudente';
             }
             
+            // 3. Progresso das Atividades
             let atividadesConcluidas = 0;
             for(let i = 1; i <= 4; i++) {
                 const resposta = localStorage.getItem(`resposta_atividade_${i}`);
@@ -651,6 +667,7 @@
                 progressAtividadesText.innerHTML = `${atividadesConcluidas}/4 atividades`;
             }
             
+            // Badge Eudaimon
             const badgeEudaimon = document.getElementById('badge3');
             const badgeForumIcon = document.getElementById('badgeForum');
             if (atividadesConcluidas >= 4) {
@@ -661,10 +678,11 @@
             } else {
                 badgeEudaimon.classList.remove('earned');
                 badgeEudaimon.classList.add('locked');
-                badgeEudaimon.innerHTML = `🔒 Eudaimon (${atividadesConcluidas}/4 atividades)`;
+                badgeEudaimon.innerHTML = `🔒 Eudaimon (${atividadesConcluidas}/4)`;
                 if (badgeForumIcon) badgeForumIcon.innerHTML = '🔒';
             }
             
+            // Badge Mestre do Diálogo
             const forumPosts = JSON.parse(localStorage.getItem('forum_posts') || '[]');
             const badgeDialogo = document.getElementById('badge4');
             if (forumPosts.length >= 3) {
@@ -674,9 +692,10 @@
             } else {
                 badgeDialogo.classList.remove('earned');
                 badgeDialogo.classList.add('locked');
-                badgeDialogo.innerHTML = `🔒 Mestre do Diálogo (${forumPosts.length}/3 posts)`;
+                badgeDialogo.innerHTML = `🔒 Mestre do Diálogo (${forumPosts.length}/3)`;
             }
             
+            // 4. Progresso geral
             let totalProgresso = 0;
             let totalItens = 0;
             totalProgresso += videosAssistidos.length;
@@ -694,28 +713,30 @@
             if (overallBar) overallBar.style.width = percentualGeral + '%';
             if (overallText) overallText.innerHTML = `Progresso geral: ${percentualGeral}%`;
             
-            const badgeCountSpan = document.getElementById('badgeCount');
             const earnedBadges = document.querySelectorAll('.badge-item.earned').length;
+            const badgeCountSpan = document.getElementById('badgeCount');
             if (badgeCountSpan) badgeCountSpan.innerHTML = `${earnedBadges} 🏆`;
             
             salvarProgressoHistorico(percentualGeral);
             
+            // 5. Botão do certificado
             const btnCertificado = document.getElementById('btnCertificado');
             const certificateStatus = document.getElementById('certificateStatus');
             if (percentualGeral >= 100) {
                 btnCertificado.disabled = false;
                 btnCertificado.innerHTML = '🎓 Gerar Certificado de Conclusão';
                 btnCertificado.style.background = '#2ecc71';
-                certificateStatus.innerHTML = '✅ Parabéns! Você completou 100% do curso. Clique no botão acima para gerar seu certificado!';
+                certificateStatus.innerHTML = '✅ Parabéns! Você completou 100% do curso!';
                 certificateStatus.style.color = '#2ecc71';
             } else {
                 btnCertificado.disabled = true;
                 btnCertificado.innerHTML = '🔒 Gerar Certificado';
                 btnCertificado.style.background = '#7f8c8d';
-                certificateStatus.innerHTML = `📊 Complete todos os módulos para liberar o certificado. Progresso atual: ${percentualGeral}%`;
+                certificateStatus.innerHTML = `📊 Complete 100% (atualmente ${percentualGeral}%)`;
                 certificateStatus.style.color = '#9aa7b9';
             }
             
+            // 6. Próxima atividade
             const nextActivityDiv = document.getElementById('nextActivity');
             if (videosAssistidos.length < totalVideos) {
                 nextActivityDiv.innerHTML = '<strong>📢 Próximo passo:</strong> 📚 Acesse o <strong>Conteúdo Teórico</strong> e assista aos vídeos!';
@@ -724,12 +745,13 @@
             } else if (atividadesConcluidas < 4) {
                 nextActivityDiv.innerHTML = '<strong>📢 Próximo passo:</strong> 💬 Responda às atividades e participe do <strong>Fórum</strong>!';
             } else if (forumPosts.length < 3) {
-                nextActivityDiv.innerHTML = '<strong>📢 Próximo passo:</strong> 💬 Publique mais posts no <strong>Fórum</strong> para completar seu certificado!';
+                nextActivityDiv.innerHTML = '<strong>📢 Próximo passo:</strong> 💬 Publique mais posts no <strong>Fórum</strong> (${forumPosts.length}/3)!';
             } else {
                 nextActivityDiv.innerHTML = '<strong>🎉 Parabéns!</strong> Você completou todos os módulos! Clique em "Gerar Certificado" acima.';
             }
         }
         
+        // Gerar certificado
         function gerarCertificado() {
             const videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
             const simulacoes = JSON.parse(localStorage.getItem('simulacoes_realizadas') || '[]');
@@ -763,14 +785,9 @@
             }
         }
         
-        // Verificar login
-        const usuarioLogado = localStorage.getItem('usuario_logado');
-        if (!usuarioLogado) {
-            window.location.href = 'https://lrpluciano-pereira.github.io/login.html';
-        }
-        
+        // Inicializar
         atualizarDashboard();
-        setInterval(atualizarDashboard, 2000);
+        setInterval(atualizarDashboard, 3000);
     </script>
 </body>
 </html>
