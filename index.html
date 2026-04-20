@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVA | Ética Aristotélica no Cotidiano Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a1628;
+            --bg-card: #0f1a2f;
+            --bg-light: #16213e;
+            --gold: #d4af37;
+            --gold-dark: #b8942e;
+            --text-primary: #ffffff;
+            --text-secondary: #9aa7b9;
+            --border: #1e2a44;
+            --success: #2ecc71;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .logo-icon {
+            margin-right: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            padding: 8px 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .user-info {
+            color: var(--text-secondary);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            min-height: calc(100vh - 160px);
+        }
+
+        /* Welcome Header */
+        .welcome-header {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 32px;
+            color: var(--bg-dark);
+        }
+
+        .student-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .modulo-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .modulo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+            border-color: var(--gold);
+        }
+
+        .modulo-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .modulo-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .modulo-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            background: var(--bg-light);
+            border-radius: 10px;
+            height: 6px;
+            overflow: hidden;
+            margin-top: 16px;
+        }
+
+        .progress-fill {
+            background: var(--gold);
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            display: block;
+        }
+
+        .next-activity {
+            background: var(--bg-card);
+            border-left: 4px solid var(--gold);
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin-top: 32px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-card);
+            text-align: center;
+            padding: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        h1, h2 {
+            color: var(--gold);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 24px 0 16px 0;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .container {
+                padding: 20px 16px;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .student-name {
+                font-size: 1.4rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">⚖️</span>
+                <span>Ética Digital</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="active">🏠 Início</a>
+                <a href="modulo-teorico.html">📚 Módulo Teórico</a>
+                <a href="simulador.html">🎮 Simulador</a>
+                <a href="atividades-forum.html">💬 Atividades</a>
+            </div>
+            <div class="user-info">
+                <span>👤 Aluno</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="welcome-header">
+            <div class="student-name">Olá, estudante! 👋</div>
+            <p style="margin-top: 8px;">Bem-vindo ao AVA de Ética Aristotélica no Cotidiano Digital. Aqui você vai aprender a aplicar o conceito de "Justo Meio" nas suas decisões digitais.</p>
+        </div>
+
+        <h2>📌 Seus Módulos</h2>
+        <div class="dashboard-grid">
+            <div class="modulo-card" onclick="window.location.href='modulo-teorico.html'">
+                <div class="modulo-icon">📖</div>
+                <div class="modulo-title">Módulo 1: Fundamentos</div>
+                <div class="modulo-desc">Introdução à Ética Aristotélica, conceito de Mesotes, virtudes e Eudaimonia.</div>
+                <div class="progress-bar"><div class="progress-fill" id="progressModulo1"></div></div>
+                <span class="progress-text" id="progressTextModulo1">0% concluído</span>
+            </div>
+
+            <div class="modulo-card" onclick="window.location.href='modulo-teorico.html#virtudes'">
+                <div class="modulo-icon">🎯</div>
+                <div class="modulo-title">Módulo 2: Justo Meio</div>
+                <div class="modulo-desc">Como identificar excesso, falta e equilíbrio nas relações digitais.</div>
+                <div class="progress-bar"><div class="progress-fill" id="progressModulo2"></div></div>
+                <span class="progress-text" id="progressTextModulo2">0% concluído</span>
+            </div>
+
+            <div class="modulo-card" onclick="window.location.href='simulador.html'">
+                <div class="modulo-icon">🎮</div>
+                <div class="modulo-title">Simulador Interativo</div>
+                <div class="modulo-desc">Pratique com dilemas reais do cotidiano digital usando o slider.</div>
+                <div class="progress-bar"><div class="progress-fill" id="progressSimulador"></div></div>
+                <span class="progress-text" id="progressTextSimulador">Não iniciado</span>
+            </div>
+
+            <div class="modulo-card" onclick="window.location.href='atividades-forum.html'">
+                <div class="modulo-icon">💡</div>
+                <div class="modulo-title">Atividades + Fórum</div>
+                <div class="modulo-desc">Questões reflexivas e discussão com colegas sobre ética digital.</div>
+                <div class="progress-bar"><div class="progress-fill" id="progressAtividades"></div></div>
+                <span class="progress-text" id="progressTextAtividades">0/4 atividades</span>
+            </div>
+        </div>
+
+        <div class="next-activity">
+            <strong>📢 Próxima atividade recomendada:</strong> Assistir ao vídeo "Introdução à Ética Aristotélica" no Módulo Teórico.
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Universidade Federal do ABC | Especialização em Ciência e Tecnologia</p>
+        <p>Licença Creative Commons BY-NC-SA | Luciano Rodrigues Pereira</p>
+    </footer>
+
+    <script>
+        function atualizarDashboard() {
+            // Verificar vídeos assistidos
+            const videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
+            const totalVideos = 2;
+            const progressoTeorico = (videosAssistidos.length / totalVideos) * 100;
+            
+            const progressMod1 = document.getElementById('progressModulo1');
+            const progressMod2 = document.getElementById('progressModulo2');
+            const textMod1 = document.getElementById('progressTextModulo1');
+            const textMod2 = document.getElementById('progressTextModulo2');
+            
+            if (progressMod1) {
+                progressMod1.style.width = progressoTeorico + '%';
+                textMod1.innerText = Math.round(progressoTeorico) + '% concluído';
+            }
+            if (progressMod2) {
+                progressMod2.style.width = progressoTeorico + '%';
+                textMod2.innerText = Math.round(progressoTeorico) + '% concluído';
+            }
+            
+            // Simulador
+            const simulacoes = JSON.parse(localStorage.getItem('simulacoes_realizadas') || '[]');
+            const totalJustoMeio = simulacoes.filter(s => s.decisao === 'justoMeio').length;
+            const progressSimulador = document.getElementById('progressSimulador');
+            const textSimulador = document.getElementById('progressTextSimulador');
+            if (progressSimulador && simulacoes.length > 0) {
+                progressSimulador.style.width = '100%';
+                textSimulador.innerText = `${simulacoes.length} cenário(s) realizado(s) | ${totalJustoMeio} escolhas equilibradas`;
+            } else if (textSimulador) {
+                textSimulador.innerText = 'Não iniciado';
+            }
+            
+            // Atividades
+            let atividadesConcluidas = 0;
+            for(let i = 1; i <= 4; i++) {
+                const resposta = localStorage.getItem(`resposta_atividade_${i}`);
+                if(resposta && resposta.trim().length > 0) atividadesConcluidas++;
+            }
+            const progressAtividades = document.getElementById('progressAtividades');
+            const textAtividades = document.getElementById('progressTextAtividades');
+            if (progressAtividades) {
+                progressAtividades.style.width = (atividadesConcluidas / 4) * 100 + '%';
+                textAtividades.innerText = `${atividadesConcluidas}/4 atividades`;
+            }
+        }
+        
+        atualizarDashboard();
+    </script>
+</body>
+</html>
