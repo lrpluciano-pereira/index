@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Ética Aristotélica no Cotidiano Digital</title>
+    <title>Ética Aristotélica no Cotidiano Digital</title>
     <style>
         * {
             margin: 0;
@@ -28,8 +28,136 @@
             background: linear-gradient(135deg, var(--bg-dark) 0%, #0d1a35 100%);
             color: var(--text-primary);
             line-height: 1.5;
+            min-height: 100vh;
         }
 
+        /* Modal de Login */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .modal.hidden {
+            display: none;
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            border-radius: 32px;
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid var(--gold);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            background: var(--gold-dark);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-card h2 {
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .modal-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--gold);
+            color: var(--bg-dark);
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-login:hover {
+            background: #e6c453;
+            transform: scale(1.01);
+        }
+
+        .demo-info {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            background: rgba(212,175,55,0.1);
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .demo-info span {
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* Navbar (só aparece após login) */
         .navbar {
             background: rgba(15, 26, 47, 0.95);
             backdrop-filter: blur(10px);
@@ -102,6 +230,19 @@
             font-size: 0.85rem;
         }
 
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .logout-btn:hover {
+            color: var(--danger);
+        }
+
+        /* Conteúdo principal (só aparece após login) */
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -275,6 +416,19 @@
             margin-top: 40px;
         }
 
+        /* Conteúdo bloqueado (escondido até login) */
+        .bloqueado {
+            display: none;
+        }
+
+        .conteudo-logado {
+            display: none;
+        }
+
+        .conteudo-logado.visible {
+            display: block;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 24px 16px;
@@ -288,96 +442,186 @@
             .badges-grid {
                 gap: 8px;
             }
+            .modal-card {
+                padding: 32px 24px;
+            }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/index/" class="logo">
-                <span>⚖️</span>
-                Ética Digital
-            </a>
-            <div class="nav-links">
-                <a href="/index/" class="active">Início</a>
-                <a href="/conteudo/">Conteúdo</a>
-                <a href="/simulador/">Simulador</a>
-                <a href="/forum/">Atividades</a>
+    <!-- MODAL DE LOGIN -->
+    <div id="loginModal" class="modal">
+        <div class="modal-card">
+            <div class="modal-icon">⚖️</div>
+            <h2>Bem-vindo ao Curso</h2>
+            <p>A Ética Aristotélica no Cotidiano Digital</p>
+            
+            <div class="input-group">
+                <label>📧 Nome ou e-mail</label>
+                <input type="text" id="loginNome" placeholder="Digite seu nome">
             </div>
-            <div class="user-info">
-                <span class="user-name" id="userName">👤 Aluno</span>
-                <a href="/login/" style="color: var(--text-secondary); text-decoration: none;">🚪 Sair</a>
+            
+            <div class="input-group">
+                <label>🔒 Senha</label>
+                <input type="password" id="loginSenha" placeholder="Digite sua senha">
             </div>
-        </div>
-    </nav>
-
-    <main class="container">
-        <div class="welcome-header">
-            <div class="student-name" id="welcomeMessage">Olá, estudante! 👋</div>
-            <p>Bem-vindo ao curso "A Ética Aristotélica no Cotidiano Digital". Complete os 4 módulos para obter seu certificado!</p>
-            <div class="progress-bar-large">
-                <div class="progress-fill-large" id="overallProgressBar"></div>
+            
+            <button class="btn-login" onclick="fazerLogin()">Entrar no Curso</button>
+            
+            <div class="demo-info">
+                💡 <strong>Demonstração:</strong><br>
+                Digite qualquer nome e senha (ex: aluno / 1234)
             </div>
         </div>
+    </div>
 
-        <div class="dashboard-grid">
-            <div class="modulo-card" onclick="location.href='/conteudo/'">
-                <div class="modulo-icon">📚</div>
-                <div class="modulo-title">Módulo 1-4</div>
-                <div class="modulo-desc">Conteúdo Teórico Completo<br>Fundamentos • Aristóteles • Outras Perspectivas • Preço da Conexão</div>
-                <div class="progress-bar"><div class="progress-fill" id="progressTeorico"></div></div>
-                <span class="progress-text" id="progressTextTeorico">0% concluído</span>
+    <!-- CONTEÚDO PRINCIPAL (SÓ APARECE APÓS LOGIN) -->
+    <div id="conteudoPrincipal" class="conteudo-logado">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="/" class="logo">
+                    <span>⚖️</span>
+                    Ética Digital
+                </a>
+                <div class="nav-links">
+                    <a href="/" class="active">Início</a>
+                    <a href="/conteudo/">Conteúdo</a>
+                    <a href="/simulador/">Simulador</a>
+                    <a href="/forum/">Atividades</a>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">👤 Aluno</span>
+                    <button class="logout-btn" onclick="fazerLogout()">🚪 Sair</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <div class="welcome-header">
+                <div class="student-name" id="welcomeMessage">Olá, estudante! 👋</div>
+                <p>Bem-vindo ao curso "A Ética Aristotélica no Cotidiano Digital". Complete os 4 módulos para obter seu certificado!</p>
+                <div class="progress-bar-large">
+                    <div class="progress-fill-large" id="overallProgressBar"></div>
+                </div>
             </div>
 
-            <div class="modulo-card" onclick="location.href='/simulador/'">
-                <div class="modulo-icon">🎮</div>
-                <div class="modulo-title">Simulador Interativo</div>
-                <div class="modulo-desc">6 dilemas do cotidiano digital para praticar o Justo Meio</div>
-                <div class="progress-bar"><div class="progress-fill" id="progressSimulador"></div></div>
-                <span class="progress-text" id="progressTextSimulador">Não iniciado</span>
+            <div class="dashboard-grid">
+                <div class="modulo-card" onclick="location.href='/conteudo/'">
+                    <div class="modulo-icon">📚</div>
+                    <div class="modulo-title">Módulo 1-4</div>
+                    <div class="modulo-desc">Conteúdo Teórico Completo<br>Fundamentos • Aristóteles • Outras Perspectivas • Preço da Conexão</div>
+                    <div class="progress-bar"><div class="progress-fill" id="progressTeorico"></div></div>
+                    <span class="progress-text" id="progressTextTeorico">0% concluído</span>
+                </div>
+
+                <div class="modulo-card" onclick="location.href='/simulador/'">
+                    <div class="modulo-icon">🎮</div>
+                    <div class="modulo-title">Simulador Interativo</div>
+                    <div class="modulo-desc">6 dilemas do cotidiano digital para praticar o Justo Meio</div>
+                    <div class="progress-bar"><div class="progress-fill" id="progressSimulador"></div></div>
+                    <span class="progress-text" id="progressTextSimulador">Não iniciado</span>
+                </div>
+
+                <div class="modulo-card" onclick="location.href='/forum/'">
+                    <div class="modulo-icon">💬</div>
+                    <div class="modulo-title">Atividades e Fórum</div>
+                    <div class="modulo-desc">4 questões reflexivas e fórum de discussão</div>
+                    <div class="progress-bar"><div class="progress-fill" id="progressAtividades"></div></div>
+                    <span class="progress-text" id="progressTextAtividades">0/4 atividades</span>
+                </div>
             </div>
 
-            <div class="modulo-card" onclick="location.href='/forum/'">
-                <div class="modulo-icon">💬</div>
-                <div class="modulo-title">Atividades e Fórum</div>
-                <div class="modulo-desc">4 questões reflexivas e fórum de discussão</div>
-                <div class="progress-bar"><div class="progress-fill" id="progressAtividades"></div></div>
-                <span class="progress-text" id="progressTextAtividades">0/4 atividades</span>
+            <div class="badges-section">
+                <h3>🏆 Suas Conquistas</h3>
+                <div class="badges-grid" id="badgesGrid">
+                    <div class="badge-item" id="badge1">🏛️ Filósofo Iniciante</div>
+                    <div class="badge-item" id="badge2">⚖️ Justo Meio</div>
+                    <div class="badge-item" id="badge3">🌿 Eudaimon</div>
+                    <div class="badge-item" id="badge4">💬 Mestre do Diálogo</div>
+                    <div class="badge-item" id="badge5">🎓 Sábio Prudente</div>
+                    <div class="badge-item" id="badge6">📱 Consciente Digital</div>
+                </div>
             </div>
-        </div>
 
-        <div class="badges-section">
-            <h3>🏆 Suas Conquistas</h3>
-            <div class="badges-grid" id="badgesGrid">
-                <div class="badge-item" id="badge1">🏛️ Filósofo Iniciante</div>
-                <div class="badge-item" id="badge2">⚖️ Justo Meio</div>
-                <div class="badge-item" id="badge3">🌿 Eudaimon</div>
-                <div class="badge-item" id="badge4">💬 Mestre do Diálogo</div>
-                <div class="badge-item" id="badge5">🎓 Sábio Prudente</div>
-                <div class="badge-item" id="badge6">📱 Consciente Digital</div>
+            <div class="certificate-section">
+                <h3>🎓 Certificado de Conclusão</h3>
+                <p>Ao completar 100% do curso, você poderá gerar seu certificado.</p>
+                <button class="btn-certificado" id="btnCertificado" onclick="gerarCertificado()" disabled>🔒 Gerar Certificado</button>
             </div>
-        </div>
+        </main>
 
-        <div class="certificate-section">
-            <h3>🎓 Certificado de Conclusão</h3>
-            <p>Ao completar 100% do curso, você poderá gerar seu certificado.</p>
-            <button class="btn-certificado" id="btnCertificado" onclick="gerarCertificado()" disabled>🔒 Gerar Certificado</button>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <p>Universidade Federal do ABC | Licença Creative Commons BY-NC-SA | Luciano Rodrigues Pereira</p>
-    </footer>
+        <footer class="footer">
+            <p>Universidade Federal do ABC | Licença Creative Commons BY-NC-SA | Luciano Rodrigues Pereira</p>
+        </footer>
+    </div>
 
     <script>
-        const usuarioNome = localStorage.getItem('usuario_nome') || 'Estudante';
-        document.getElementById('userName').innerHTML = `👤 ${usuarioNome}`;
-        document.getElementById('welcomeMessage').innerHTML = `Olá, ${usuarioNome}! 👋`;
-
-        if (!localStorage.getItem('usuario_logado')) {
-            window.location.href = '/login/';
+        // ============================================
+        // FUNÇÕES DE LOGIN
+        // ============================================
+        
+        function fazerLogin() {
+            const nome = document.getElementById('loginNome').value.trim();
+            const senha = document.getElementById('loginSenha').value;
+            
+            // Validação simples - aceita qualquer nome com senha >= 4 caracteres
+            if (senha.length < 4) {
+                alert('A senha deve ter no mínimo 4 caracteres.');
+                return;
+            }
+            
+            const nomeExibir = nome === '' ? 'Estudante' : nome;
+            
+            // Salvar dados do usuário
+            localStorage.setItem('usuario_nome', nomeExibir);
+            localStorage.setItem('usuario_logado', 'true');
+            localStorage.setItem('usuario_senha', senha);
+            
+            // Esconder modal e mostrar conteúdo
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('conteudoPrincipal').classList.add('visible');
+            
+            // Atualizar nome na interface
+            document.getElementById('userName').innerHTML = `👤 ${nomeExibir}`;
+            document.getElementById('welcomeMessage').innerHTML = `Olá, ${nomeExibir}! 👋`;
+            
+            // Carregar dados do dashboard
+            atualizarDashboard();
         }
-
+        
+        function fazerLogout() {
+            // Limpar dados de login (mantém o progresso do curso)
+            localStorage.removeItem('usuario_logado');
+            
+            // Esconder conteúdo e mostrar modal
+            document.getElementById('conteudoPrincipal').classList.remove('visible');
+            document.getElementById('loginModal').classList.remove('hidden');
+            
+            // Limpar campos
+            document.getElementById('loginNome').value = '';
+            document.getElementById('loginSenha').value = '';
+        }
+        
+        // Verificar se já está logado ao carregar a página
+        function verificarLogin() {
+            const logado = localStorage.getItem('usuario_logado');
+            if (logado === 'true') {
+                const nome = localStorage.getItem('usuario_nome') || 'Estudante';
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('conteudoPrincipal').classList.add('visible');
+                document.getElementById('userName').innerHTML = `👤 ${nome}`;
+                document.getElementById('welcomeMessage').innerHTML = `Olá, ${nome}! 👋`;
+                atualizarDashboard();
+            } else {
+                document.getElementById('loginModal').classList.remove('hidden');
+                document.getElementById('conteudoPrincipal').classList.remove('visible');
+            }
+        }
+        
+        // ============================================
+        // FUNÇÕES DO DASHBOARD
+        // ============================================
+        
         function atualizarDashboard() {
             // Vídeos assistidos (4 módulos)
             let videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
@@ -463,7 +707,7 @@
                 badgeDialogo.innerHTML = `🔒 Mestre do Diálogo (${forumPosts.length}/3)`;
             }
             
-            // Badge Consciente Digital (mini-simulador do módulo 4)
+            // Badge Consciente Digital
             let miniSimulador = JSON.parse(localStorage.getItem('mini_simulador') || '[]');
             let badgeConsciente = document.getElementById('badge6');
             if (miniSimulador.includes('modulo4')) {
@@ -540,8 +784,15 @@
             }
         }
         
-        atualizarDashboard();
-        setInterval(atualizarDashboard, 3000);
+        // Inicializar
+        verificarLogin();
+        
+        // Atualizar a cada 3 segundos (para capturar mudanças de outras abas)
+        setInterval(() => {
+            if (localStorage.getItem('usuario_logado') === 'true') {
+                atualizarDashboard();
+            }
+        }, 3000);
     </script>
 </body>
 </html>
