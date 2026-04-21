@@ -17,10 +17,16 @@
             --bg-light: #16213e;
             --gold: #d4af37;
             --gold-dark: #b8942e;
+            --gold-light: #e6c453;        /* NOVO - mais claro para hovers */
             --text-primary: #ffffff;
-            --text-secondary: #c5d0e6;
+            --text-secondary: #b0b8d0;     /* MELHORADO - mais contraste */
+            --text-tertiary: #8a98b0;      /* NOVO - para textos menos importantes */
             --border: #1e2a44;
             --success: #2ecc71;
+            --success-dark: #27ae60;       /* NOVO - hover do sucesso */
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
         }
 
         body {
@@ -38,8 +44,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -117,11 +123,13 @@
             border-radius: 12px;
             color: var(--text-primary);
             font-size: 1rem;
+            transition: all 0.2s;
         }
 
         .input-group input:focus {
             outline: none;
             border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
         }
 
         .btn-login {
@@ -139,15 +147,15 @@
         }
 
         .btn-login:hover {
-            background: #e6c453;
+            background: var(--gold-light);
             transform: scale(1.01);
         }
 
         .demo-info {
             margin-top: 20px;
             font-size: 0.7rem;
-            color: var(--text-secondary);
-            background: rgba(212,175,55,0.1);
+            color: var(--text-tertiary);
+            background: rgba(212,175,55,0.08);
             padding: 10px;
             border-radius: 12px;
         }
@@ -186,6 +194,11 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .logo:hover {
+            color: var(--gold-light);
         }
 
         .logo span {
@@ -212,7 +225,12 @@
             font-weight: 500;
         }
 
-        .nav-links a:hover, .nav-links a.active {
+        .nav-links a:hover {
+            color: var(--gold-light);
+            border-bottom: 2px solid var(--gold-light);
+        }
+
+        .nav-links a.active {
             color: var(--gold);
             border-bottom: 2px solid var(--gold);
         }
@@ -228,14 +246,16 @@
             padding: 6px 14px;
             border-radius: 30px;
             font-size: 0.85rem;
+            color: var(--text-secondary);
         }
 
         .logout-btn {
             background: none;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
             cursor: pointer;
             font-size: 0.85rem;
+            transition: color 0.2s;
         }
 
         .logout-btn:hover {
@@ -264,7 +284,7 @@
         }
 
         .progress-bar-large {
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.25);
             border-radius: 10px;
             height: 8px;
             margin-top: 16px;
@@ -298,6 +318,7 @@
         .modulo-card:hover {
             transform: translateY(-4px);
             border-color: var(--gold);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
         }
 
         .modulo-icon {
@@ -337,7 +358,7 @@
 
         .progress-text {
             font-size: 0.75rem;
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
             margin-top: 6px;
             display: block;
         }
@@ -369,6 +390,7 @@
             align-items: center;
             gap: 8px;
             font-size: 0.85rem;
+            transition: all 0.2s;
         }
 
         .badge-item.earned {
@@ -389,6 +411,11 @@
             text-align: center;
         }
 
+        .certificate-section h3 {
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
         .btn-certificado {
             background: var(--success);
             color: var(--bg-dark);
@@ -398,10 +425,16 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-certificado:hover:not(:disabled) {
+            background: var(--success-dark);
+            transform: scale(1.02);
         }
 
         .btn-certificado:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
             background: #7f8c8d;
         }
@@ -411,16 +444,12 @@
             text-align: center;
             padding: 28px;
             border-top: 1px solid var(--border);
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
             font-size: 0.85rem;
             margin-top: 40px;
         }
 
         /* Conteúdo bloqueado (escondido até login) */
-        .bloqueado {
-            display: none;
-        }
-
         .conteudo-logado {
             display: none;
         }
@@ -445,6 +474,27 @@
             .modal-card {
                 padding: 32px 24px;
             }
+            .nav-links {
+                gap: 16px;
+            }
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-light);
         }
     </style>
 </head>
@@ -564,7 +614,6 @@
             const nome = document.getElementById('loginNome').value.trim();
             const senha = document.getElementById('loginSenha').value;
             
-            // Validação simples - aceita qualquer nome com senha >= 4 caracteres
             if (senha.length < 4) {
                 alert('A senha deve ter no mínimo 4 caracteres.');
                 return;
@@ -572,37 +621,27 @@
             
             const nomeExibir = nome === '' ? 'Estudante' : nome;
             
-            // Salvar dados do usuário
             localStorage.setItem('usuario_nome', nomeExibir);
             localStorage.setItem('usuario_logado', 'true');
             localStorage.setItem('usuario_senha', senha);
             
-            // Esconder modal e mostrar conteúdo
             document.getElementById('loginModal').classList.add('hidden');
             document.getElementById('conteudoPrincipal').classList.add('visible');
             
-            // Atualizar nome na interface
             document.getElementById('userName').innerHTML = `👤 ${nomeExibir}`;
             document.getElementById('welcomeMessage').innerHTML = `Olá, ${nomeExibir}! 👋`;
             
-            // Carregar dados do dashboard
             atualizarDashboard();
         }
         
         function fazerLogout() {
-            // Limpar dados de login (mantém o progresso do curso)
             localStorage.removeItem('usuario_logado');
-            
-            // Esconder conteúdo e mostrar modal
             document.getElementById('conteudoPrincipal').classList.remove('visible');
             document.getElementById('loginModal').classList.remove('hidden');
-            
-            // Limpar campos
             document.getElementById('loginNome').value = '';
             document.getElementById('loginSenha').value = '';
         }
         
-        // Verificar se já está logado ao carregar a página
         function verificarLogin() {
             const logado = localStorage.getItem('usuario_logado');
             if (logado === 'true') {
@@ -623,13 +662,11 @@
         // ============================================
         
         function atualizarDashboard() {
-            // Vídeos assistidos (4 módulos)
             let videosAssistidos = JSON.parse(localStorage.getItem('videos_assistidos') || '[]');
             let progressoTeorico = Math.min(100, Math.round((videosAssistidos.length / 4) * 100));
             document.getElementById('progressTeorico').style.width = progressoTeorico + '%';
             document.getElementById('progressTextTeorico').innerHTML = progressoTeorico + '% concluído';
             
-            // Badge Filósofo Iniciante
             let badgeFilosofo = document.getElementById('badge1');
             if (videosAssistidos.length >= 4) {
                 badgeFilosofo.classList.add('earned');
@@ -641,7 +678,6 @@
                 badgeFilosofo.innerHTML = '🔒 Filósofo Iniciante';
             }
             
-            // Simulador
             let simulacoes = JSON.parse(localStorage.getItem('simulacoes_realizadas') || '[]');
             let totalJustoMeio = simulacoes.filter(s => s.decisao === 'justoMeio').length;
             if (simulacoes.length > 0) {
@@ -649,7 +685,6 @@
                 document.getElementById('progressTextSimulador').innerHTML = `${simulacoes.length} cenário(s) | ${totalJustoMeio} escolhas equilibradas`;
             }
             
-            // Badge Justo Meio
             let badgeJustoMeio = document.getElementById('badge2');
             if (totalJustoMeio >= 1) {
                 badgeJustoMeio.classList.add('earned');
@@ -661,7 +696,6 @@
                 badgeJustoMeio.innerHTML = '🔒 Justo Meio';
             }
             
-            // Badge Sábio Prudente
             let badgeSabio = document.getElementById('badge5');
             if (totalJustoMeio >= 3) {
                 badgeSabio.classList.add('earned');
@@ -673,7 +707,6 @@
                 badgeSabio.innerHTML = totalJustoMeio > 0 ? `🔒 Sábio Prudente (faltam ${3 - totalJustoMeio})` : '🔒 Sábio Prudente';
             }
             
-            // Atividades
             let atividadesConcluidas = 0;
             for(let i = 1; i <= 4; i++) {
                 let resposta = localStorage.getItem(`resposta_atividade_${i}`);
@@ -682,7 +715,6 @@
             document.getElementById('progressAtividades').style.width = (atividadesConcluidas / 4) * 100 + '%';
             document.getElementById('progressTextAtividades').innerHTML = `${atividadesConcluidas}/4 atividades`;
             
-            // Badge Eudaimon
             let badgeEudaimon = document.getElementById('badge3');
             if (atividadesConcluidas >= 4) {
                 badgeEudaimon.classList.add('earned');
@@ -694,7 +726,6 @@
                 badgeEudaimon.innerHTML = `🔒 Eudaimon (${atividadesConcluidas}/4)`;
             }
             
-            // Fórum
             let forumPosts = JSON.parse(localStorage.getItem('forum_posts') || '[]');
             let badgeDialogo = document.getElementById('badge4');
             if (forumPosts.length >= 3) {
@@ -707,7 +738,6 @@
                 badgeDialogo.innerHTML = `🔒 Mestre do Diálogo (${forumPosts.length}/3)`;
             }
             
-            // Badge Consciente Digital
             let miniSimulador = JSON.parse(localStorage.getItem('mini_simulador') || '[]');
             let badgeConsciente = document.getElementById('badge6');
             if (miniSimulador.includes('modulo4')) {
@@ -720,7 +750,6 @@
                 badgeConsciente.innerHTML = '🔒 Consciente Digital';
             }
             
-            // Progresso geral
             let totalProgresso = 0;
             let totalItens = 0;
             totalProgresso += videosAssistidos.length;
@@ -784,10 +813,7 @@
             }
         }
         
-        // Inicializar
         verificarLogin();
-        
-        // Atualizar a cada 3 segundos (para capturar mudanças de outras abas)
         setInterval(() => {
             if (localStorage.getItem('usuario_logado') === 'true') {
                 atualizarDashboard();
